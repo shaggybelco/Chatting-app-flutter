@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Custom/custom_card.dart';
 import 'package:frontend/Models/chat_model.dart';
+import 'package:frontend/Screens/select_contact.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -12,74 +13,60 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<ChatModel> chats = [
     ChatModel(
-      "shaggy",
-      Icons.person,
-      false,
-      "12:02",
-      "Hey there shaggy",
+      name: "shaggy",
+      icon: Icons.person,
+      isGroup: false,
+      time: "12:02",
+      currentMessage: "Hey there shaggy",
     ),
     ChatModel(
-      "meeting everyone",
-      Icons.group,
-      true,
-      "12:02",
-      "Hey there everyone",
+      name: "meeting everyone",
+      icon: Icons.group,
+      isGroup: true,
+      time: "12:02",
+      currentMessage: "Hey there everyone",
     ),
     ChatModel(
-      "Man do",
-      Icons.person,
-      false,
-      "12:02",
-      "Hey there man do",
+      name: "Man do",
+      icon: Icons.person,
+      isGroup: false,
+      time: "12:02",
+      currentMessage: "Hey there man do",
     ),
     ChatModel(
-      "shaggy",
-      Icons.person,
-      false,
-      "12:02",
-      "Hey there shaggy",
+      name: "shaggy",
+      icon: Icons.person,
+      isGroup: false,
+      time: "12:02",
+      currentMessage: "Hey there shaggy",
     ),
     ChatModel(
-      "meeting everyone",
-      Icons.group,
-      true,
-      "12:02",
-      "Hey there everyone",
+      name: "meeting everyone",
+      icon: Icons.group,
+      isGroup: true,
+      time: "12:02",
+      currentMessage: "Hey there everyone",
     ),
     ChatModel(
-      "Man do",
-      Icons.person,
-      false,
-      "12:02",
-      "Hey there man do",
-    ),
-    ChatModel(
-      "shaggy",
-      Icons.person,
-      false,
-      "12:02",
-      "Hey there shaggy",
-    ),
-    ChatModel(
-      "meeting everyone",
-      Icons.group,
-      true,
-      "12:02",
-      "Hey there everyone",
-    ),
-    ChatModel(
-      "Man do",
-      Icons.person,
-      false,
-      "12:02",
-      "Hey there man do",
-    ),
+      name: "Man do",
+      icon: Icons.person,
+      isGroup: false,
+      time: "12:02",
+      currentMessage: "Hey there man do",
+    )
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (builder) => const Contacts(),
+            ),
+          );
+        },
         backgroundColor: const Color.fromARGB(255, 165, 215, 232),
         foregroundColor: const Color.fromARGB(255, 25, 55, 109),
         child: const Icon(Icons.chat_bubble),

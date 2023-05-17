@@ -2,6 +2,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/chat_model.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:frontend/Pages/camera_page.dart';
 
 class IndividualChats extends StatefulWidget {
   const IndividualChats({Key? key, required this.chats}) : super(key: key);
@@ -103,7 +104,7 @@ class _IndividualChatsState extends State<IndividualChats> {
               return [
                 const PopupMenuItem(
                   value: "View contact",
-                  child: Text("New group"),
+                  child: Text("View contact"),
                 ),
                 const PopupMenuItem(
                   value: "Media, Links, and Docs",
@@ -190,7 +191,8 @@ class _IndividualChatsState extends State<IndividualChats> {
                                         showModalBottomSheet(
                                           backgroundColor: Colors.transparent,
                                           context: context,
-                                          builder: (builder) => attachModal(),
+                                          builder: (builder) =>
+                                              attachModal(context),
                                         );
                                       },
                                     ),
@@ -274,11 +276,80 @@ class _IndividualChatsState extends State<IndividualChats> {
   }
 }
 
-Widget attachModal() {
-  return const SizedBox(
+Widget cameraModal() {
+  return const SizedBox();
+}
+
+Widget attachModal(BuildContext context) {
+  return SizedBox(
     height: 300,
     child: Card(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                iconCreation(
+                    Icons.insert_drive_file, Colors.indigo, "Document", () {}),
+                iconCreation(Icons.camera_alt, Colors.pink, "Camera", () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CameraPage(),
+                    ),
+                  );
+                }),
+                iconCreation(
+                    Icons.insert_photo, Colors.purple, "Gallery", () {}),
+              ],
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                iconCreation(Icons.headset, Colors.orange, "Audio", () {}),
+                iconCreation(
+                    Icons.location_pin, Colors.teal, "Location", () {}),
+                iconCreation(Icons.person, Colors.blue, "Contact", () {}),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget iconCreation(
+    IconData icon, Color color, String name, VoidCallback clicked) {
+  return InkWell(
+    onTap: clicked,
+    child: Column(
+      children: [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: color,
+          child: Icon(
+            color: Colors.white,
+            icon,
+            size: 29,
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Text(
+          name,
+          style: const TextStyle(fontSize: 12),
+        ),
+      ],
     ),
   );
 }
