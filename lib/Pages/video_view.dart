@@ -32,37 +32,16 @@ class _VideoViewPageState extends State<VideoViewPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        actions: [
-          IconButton(
-            icon:const Icon(
-              Icons.crop_rotate,
-              size: 27,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 11, 36, 71),
+                Color.fromARGB(255, 165, 215, 232),
+              ],
             ),
-            onPressed: () {}
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.emoji_emotions_outlined,
-              size: 27,
-            ),
-            onPressed: () {}
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.title,
-              size: 27,
-            ),
-            onPressed: () {}
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.edit,
-              size: 27,
-            ),
-            onPressed: () {}
-          ),
-        ],
+        ),
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -71,7 +50,7 @@ class _VideoViewPageState extends State<VideoViewPage> {
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height - 150,
+              height: MediaQuery.of(context).size.height - 160,
               child: _controller.value.isInitialized
                 ? AspectRatio(
                     aspectRatio: _controller.value.aspectRatio,
@@ -82,7 +61,7 @@ class _VideoViewPageState extends State<VideoViewPage> {
             Positioned(
               bottom: 0,
               child: Container(
-                color: Colors.black38,
+                color: const Color.fromARGB(255, 11, 36, 71),
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                 child: TextFormField(
@@ -92,22 +71,22 @@ class _VideoViewPageState extends State<VideoViewPage> {
                   ),
                   maxLines: 6,
                   minLines: 1,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "Add Caption....",
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Icons.add_photo_alternate,
                         color: Colors.white,
                         size: 27,
                       ),
-                      hintStyle: const TextStyle(
+                      hintStyle: TextStyle(
                         color: Colors.white,
                         fontSize: 17,
                       ),
                       suffixIcon: CircleAvatar(
-                        radius: 27,
-                        backgroundColor: Colors.tealAccent[700],
-                        child: const Icon(
+                        radius: 20,
+                        backgroundColor: Color.fromARGB(255, 165, 215, 232),
+                        child: Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 27,

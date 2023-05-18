@@ -59,7 +59,7 @@ class _CameraPageState extends State<CameraPage> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.close),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: Stack(
@@ -98,7 +98,7 @@ class _CameraPageState extends State<CameraPage> {
           Positioned(
             bottom: 0.0,
             child: Container(
-              color: Colors.transparent,
+              color: Colors.black54,
               padding: const EdgeInsets.only(top: 5, bottom: 5),
               width: MediaQuery.of(context).size.width,
               child: Column(
@@ -123,14 +123,18 @@ class _CameraPageState extends State<CameraPage> {
                         onLongPress: () async {
                           await cameracontroller.startVideoRecording();
                           _elapsedSeconds = 0;
+                          setState(() {
+                            isRecording = true;
+                          });
                           _timer = Timer.periodic(const Duration(seconds: 1),
                               (timer) {
                             setState(() {
-                              _elapsedSeconds++;
+                              if (!isRecording) {
+                                _elapsedSeconds = 0;
+                              } else {
+                                _elapsedSeconds++;
+                              }
                             });
-                          });
-                          setState(() {
-                            isRecording = true;
                           });
                         },
                         onLongPressUp: () async {
@@ -151,11 +155,10 @@ class _CameraPageState extends State<CameraPage> {
                         onTap: () {
                           if (!isRecording) takePhoto(context);
                         },
-                        child: isRecording
-                            ? const Icon(
+                        child: isRecording ? const Icon(
                                 Icons.radio_button_on,
                                 color: Colors.red,
-                                size: 80,
+                                size: 70,
                               )
                             : const Icon(
                                 Icons.panorama_fish_eye,
@@ -164,19 +167,14 @@ class _CameraPageState extends State<CameraPage> {
                               ),
                       ),
                       IconButton(
-                        icon: Transform.rotate(
-                          angle: transform,
-                          child: const Icon(Icons.flip_camera_ios,
-                              color: Colors.white, size: 28),
-                        ),
+                        icon: const Icon(Icons.flip_camera_android, color: Colors.white, size: 28),
                         onPressed: () {
                           setState(() {
                             iscamerafront = !iscamerafront;
                             transform = transform + pi;
                           });
                           int cameraPos = iscamerafront ? 0 : 1;
-                          cameracontroller = CameraController(
-                              cameras[cameraPos], ResolutionPreset.high);
+                          cameracontroller = CameraController(cameras[cameraPos], ResolutionPreset.high);
                           cameraValue = cameracontroller.initialize();
                         },
                       ),
@@ -202,9 +200,7 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   void takePhoto(context) async {
-    print("asfhdasuildfhasoudlifhasldiufhusald");
     XFile file = await cameracontroller.takePicture();
-    print(file.path + " " + "now and never before");
     Navigator.push(
       context,
       MaterialPageRoute(

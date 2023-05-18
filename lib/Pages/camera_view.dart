@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class CameraView extends StatelessWidget {
-  const CameraView({
-    Key? key, 
-    this.path
-  }) : super(key: key);
+  const CameraView({Key? key, this.path}) : super(key: key);
 
   final path;
 
@@ -15,7 +12,16 @@ class CameraView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 11, 36, 71),
+                Color.fromARGB(255, 165, 215, 232),
+              ],
+            ),
+          ),
+        ),
         actions: [
           IconButton(
               icon: const Icon(
@@ -50,16 +56,16 @@ class CameraView extends StatelessWidget {
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height - 150,
+              height: MediaQuery.of(context).size.height - 160,
               child: Image.file(
                 File(path!),
                 fit: BoxFit.cover,
               ),
             ),
             Positioned(
-              bottom: 0,
+              bottom: 1,
               child: Container(
-                color: Colors.black38,
+                color: const Color.fromARGB(255, 11, 36, 71),
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                 child: TextFormField(
@@ -69,27 +75,28 @@ class CameraView extends StatelessWidget {
                   ),
                   maxLines: 6,
                   minLines: 1,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Add Caption....",
-                      prefixIcon: const Icon(
-                        Icons.add_photo_alternate,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Add Caption....",
+                    prefixIcon: Icon(
+                      Icons.add_photo_alternate,
+                      color: Colors.white,
+                      size: 27,
+                    ),
+                    hintStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                    ),
+                    suffixIcon: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Color.fromARGB(255, 165, 215, 232),
+                      child: Icon(
+                        Icons.check,
                         color: Colors.white,
                         size: 27,
                       ),
-                      hintStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                      ),
-                      suffixIcon: CircleAvatar(
-                        radius: 27,
-                        backgroundColor: Colors.tealAccent[700],
-                        child: const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 27,
-                        ),
-                      )),
+                    ),
+                  ),
                 ),
               ),
             ),
