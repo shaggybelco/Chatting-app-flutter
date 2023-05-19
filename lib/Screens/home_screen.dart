@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
+        automaticallyImplyLeading: false,
         title: const Text("Belco"),
         actions: [
           const IconButton(
@@ -58,6 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 const PopupMenuItem(
                   value: "Settings",
                   child: Text("Settings"),
+                ),
+                const PopupMenuItem(
+                  value: "Logout",
+                  child: Text("Logout"),
                 ),
               ];
             },

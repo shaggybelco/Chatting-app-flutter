@@ -106,7 +106,14 @@ class _CreateGroupState extends State<CreateGroup> {
                     scrollDirection: Axis.horizontal,
                     itemCount: groups.length,
                     itemBuilder: (context, index) => InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        if (groups[index].select == true) {
+                          setState(() {
+                            groups[index].select = false;
+                            groups.remove(groups[index]);
+                          });
+                        } 
+                      },
                       child: AvatarCard(groups: groups[index]),
                     ),
                   ),

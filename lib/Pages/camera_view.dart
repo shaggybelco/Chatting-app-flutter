@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class CameraView extends StatelessWidget {
-  const CameraView({Key? key, this.path}) : super(key: key);
+  const CameraView({Key? key, required this.path}) : super(key: key);
 
-  final path;
+  final String path;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class CameraView extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - 160,
               child: Image.file(
-                File(path!),
+                File(path),
                 fit: BoxFit.cover,
               ),
             ),

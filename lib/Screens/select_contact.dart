@@ -60,7 +60,6 @@ class _ContactsState extends State<Contacts> {
           ),
           PopupMenuButton<String>(
             onSelected: (value) {
-              print(value);
             },
             itemBuilder: (BuildContext context) {
               return [

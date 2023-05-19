@@ -6,10 +6,10 @@ import 'package:video_player/video_player.dart';
 class VideoViewPage extends StatefulWidget {
   const VideoViewPage({
     Key? key, 
-    this.path
+    required this.path
   }) : super(key: key);
 
-  final path;
+  final String path;
 
   @override
   _VideoViewPageState createState() => _VideoViewPageState();

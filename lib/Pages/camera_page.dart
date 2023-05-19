@@ -4,8 +4,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Pages/camera_view.dart';
 import 'package:frontend/Pages/video_view.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -143,6 +141,7 @@ class _CameraPageState extends State<CameraPage> {
                           setState(() {
                             isRecording = false;
                           });
+                          // ignore: use_build_context_synchronously
                           Navigator.push(
                             context,
                             MaterialPageRoute(

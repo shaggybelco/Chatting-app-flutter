@@ -5,6 +5,8 @@ import 'package:frontend/Custom/sender_bubble.dart';
 import 'package:frontend/Models/chat_model.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:frontend/Pages/camera_page.dart';
+// ignore: library_prefixes
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class IndividualChats extends StatefulWidget {
   const IndividualChats({Key? key, required this.chats}) : super(key: key);
@@ -18,6 +20,40 @@ class _IndividualChatsState extends State<IndividualChats> {
   bool emojiShowing = false;
   FocusNode focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
+
+  late IO.Socket socket;
+
+  void connect() {
+    socket.onConnect(
+      (data) => {
+        print("connection done"),
+        socket.emit("connected", {"userID": "koasfjaso;fdjnaeiwofj"})
+      },
+    );
+
+    print(socket.connected);
+    socket.onConnectError((data) => {print("Connetcion error: " + data)});
+
+    socket.onDisconnect((data) => print("Disconnection done"));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    socket = IO.io(
+        "http://192.168.255.117:3333",
+        IO.OptionBuilder().setTransports(["websocket"]).setQuery(
+            {"username": widget.chats.name}).build());
+
+    connect();
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        setState(() {
+          emojiShowing = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,9 +143,7 @@ class _IndividualChatsState extends State<IndividualChats> {
                 ),
               ),
               PopupMenuButton<String>(
-                onSelected: (value) {
-                  print(value);
-                },
+                onSelected: (value) {},
                 itemBuilder: (BuildContext context) {
                   return [
                     const PopupMenuItem(

@@ -1,12 +1,23 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/Models/user.adapter.dart';
 import 'package:frontend/Screens/home_screen.dart';
+import 'package:frontend/Screens/login_screen.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import 'Pages/camera_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+// initilize hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserDataAdapterAdapter());
+
+  await Hive.openBox("authBox");
+  await Hive.openBox("userBox");
+
+  // initialize cameras
   cameras = await availableCameras();
 
   runApp(const MyApp());
@@ -14,6 +25,24 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  autoLogin() {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final authBox = Hive.box("authBox");
+    final userBox = Hive.box("userBox");
+
+    // authBox.put("isLoggedIn", false);
+    bool? isLoggedIn = authBox.get("isLoggedIn");
+
+    print(isLoggedIn);
+
+    if (isLoggedIn == true) {
+      return const HomeScreen();
+    } else {
+      return const LoginScreen();
+    }
+  }
 
   // This widget is the root of your application.
   @override
@@ -24,7 +53,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: "OpenSans",
       ),
-      home: const HomeScreen(),
+      home: autoLogin(),
     );
   }
 }
