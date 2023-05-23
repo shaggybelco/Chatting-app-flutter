@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     // authBox.put("isLoggedIn", false);
     bool? isLoggedIn = authBox.get("isLoggedIn");
 
-    print(isLoggedIn);
+    print(authBox.get("token"));
 
     if (isLoggedIn == true) {
       return const HomeScreen();

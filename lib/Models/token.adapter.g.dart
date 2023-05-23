@@ -1,44 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.adapter.dart';
+part of 'token.adapter.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserDataAdapterAdapter extends TypeAdapter<UserDataAdapter> {
+class TokenModelAdapter extends TypeAdapter<TokenModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
-  UserDataAdapter read(BinaryReader reader) {
+  TokenModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserDataAdapter(
-      id: fields[0] as String?,
-      name: fields[1] as String?,
-      cellphone: fields[2] as String?,
-      avatar: fields[3] as String?,
-      isAvatar: fields[4] as bool?,
+    return TokenModel(
+      token: fields[0] as String?,
+      isLoggedIn: fields[1] as bool?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, UserDataAdapter obj) {
+  void write(BinaryWriter writer, TokenModel obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.cellphone)
-      ..writeByte(3)
-      ..write(obj.avatar)
-      ..writeByte(4)
-      ..write(obj.isAvatar);
+      ..writeByte(0)
+      ..write(obj.token)
+      ..writeByte(1)
+      ..write(obj.isLoggedIn);
   }
 
   @override
@@ -47,7 +38,7 @@ class UserDataAdapterAdapter extends TypeAdapter<UserDataAdapter> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserDataAdapterAdapter &&
+      other is TokenModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

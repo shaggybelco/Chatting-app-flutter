@@ -4,15 +4,18 @@ part 'user.adapter.g.dart';
 @HiveType(typeId: 1)
 class UserDataAdapter {
   @HiveField(0)
-  String? name;
+  String? id;
   @HiveField(1)
-  String? cellphone;  
+  String? name;
+  @HiveField(2)
+  String? cellphone;
   @HiveField(3)
   String? avatar;
   @HiveField(4)
   bool? isAvatar;
 
   UserDataAdapter({
+    this.id,
     this.name,
     this.cellphone,
     this.avatar,

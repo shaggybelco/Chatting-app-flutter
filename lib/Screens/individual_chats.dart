@@ -2,16 +2,18 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Custom/receiver_bubble.dart';
 import 'package:frontend/Custom/sender_bubble.dart';
-import 'package:frontend/Models/chat_model.dart';
+import 'package:frontend/Models/chat.model.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:frontend/Pages/camera_page.dart';
+import 'package:frontend/Services/auth.hive.dart';
+import 'package:frontend/Services/getUserChats.service.dart';
 // ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class IndividualChats extends StatefulWidget {
   const IndividualChats({Key? key, required this.chats}) : super(key: key);
 
-  final ChatModel chats;
+  final LastMessages chats;
   @override
   State<IndividualChats> createState() => _IndividualChatsState();
 }
@@ -20,14 +22,31 @@ class _IndividualChatsState extends State<IndividualChats> {
   bool emojiShowing = false;
   FocusNode focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
-
+  final GetChats getChats = GetChats();
   late IO.Socket socket;
+
+  late String userId = "";
+  void getUser() async {
+    await getChats.getUser().then(
+          (value) => {
+            setState(() {
+              userId = value.id.toString();
+            }),
+            print(value.id),
+          },
+        );
+  }
 
   void connect() {
     socket.onConnect(
       (data) => {
         print("connection done"),
-        socket.emit("connected", {"userID": "koasfjaso;fdjnaeiwofj"})
+        socket.emit(
+          "connected",
+          {
+            "userID": userId,
+          },
+        )
       },
     );
 
@@ -41,11 +60,14 @@ class _IndividualChatsState extends State<IndividualChats> {
   void initState() {
     super.initState();
     socket = IO.io(
-        "http://192.168.255.117:3333",
-        IO.OptionBuilder().setTransports(["websocket"]).setQuery(
-            {"username": widget.chats.name}).build());
+      "http://192.168.255.117:3333",
+      IO.OptionBuilder().setTransports(["websocket"]).setQuery({
+        "username": widget.chats.receiver!.id.toString(),
+      }).build(),
+    );
 
     connect();
+    getUser();
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         setState(() {
@@ -93,10 +115,18 @@ class _IndividualChatsState extends State<IndividualChats> {
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: const Color.fromARGB(255, 165, 215, 232),
-                    child: Icon(
-                      widget.chats.icon,
-                      color: Colors.white,
-                    ),
+                    child: widget.chats.receiver!.isAvatar == false
+                        ? const Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          )
+                        : ClipOval(
+                            child: Image.network(
+                              widget.chats.receiver!.avatar.toString(),
+                              fit: BoxFit.cover,
+                              width: 200,
+                            ),
+                          ),
                   ),
                 ],
               ),
@@ -110,7 +140,7 @@ class _IndividualChatsState extends State<IndividualChats> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.chats.name,
+                      widget.chats.receiver!.name.toString(),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -174,12 +204,15 @@ class _IndividualChatsState extends State<IndividualChats> {
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height - 180,
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: const [
-                      Senderbubble(),
-                      ReceiverBubble(),
-                    ],
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      if (widget.chats.receiver!.id.toString() != userId) {
+                        return const Senderbubble();
+                      } else {
+                        return const ReceiverBubble();
+                      }
+                    },
+                    itemCount: widget.chats.filteredMessages!.length,
                   ),
                 ),
                 Align(

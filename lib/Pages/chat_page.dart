@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Custom/custom_card.dart';
+import 'package:frontend/Models/chat.model.dart';
 import 'package:frontend/Models/chat_model.dart';
 import 'package:frontend/Screens/select_contact.dart';
+import 'package:hive/hive.dart';
+
+import '../Services/getUserChats.service.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -11,50 +15,38 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  List<ChatModel> chats = [
-    ChatModel(
-      name: "shaggy",
-      icon: Icons.person,
-      isGroup: false,
-      time: "12:02",
-      currentMessage: "Hey there shaggy",
-    ),
-    ChatModel(
-      name: "meeting everyone",
-      icon: Icons.group,
-      isGroup: true,
-      time: "12:02",
-      currentMessage: "Hey there everyone",
-    ),
-    ChatModel(
-      name: "Man do",
-      icon: Icons.person,
-      isGroup: false,
-      time: "12:02",
-      currentMessage: "Hey there man do",
-    ),
-    ChatModel(
-      name: "shaggy",
-      icon: Icons.person,
-      isGroup: false,
-      time: "12:02",
-      currentMessage: "Hey there shaggy",
-    ),
-    ChatModel(
-      name: "meeting everyone",
-      icon: Icons.group,
-      isGroup: true,
-      time: "12:02",
-      currentMessage: "Hey there everyone",
-    ),
-    ChatModel(
-      name: "Man do",
-      icon: Icons.person,
-      isGroup: false,
-      time: "12:02",
-      currentMessage: "Hey there man do",
-    )
-  ];
+  final GetChats apiservice = GetChats();
+  @override
+  void initState() {
+    super.initState();
+    fetchChats();
+  }
+
+  final List<LastMessages> chatList = [];
+
+  fetchChats() async{
+    apiservice.getUserMessage().then(
+          (value) => {
+            if (value.error!.error.toString() != '')
+              {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      value.error!.error.toString(),
+                    ),
+                  ),
+                ),
+              }
+            else
+              {
+                setState(() {
+                  chatList.addAll(value.lastMessages ?? []);
+                }),
+              }
+          },
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,9 +64,9 @@ class _ChatPageState extends State<ChatPage> {
         child: const Icon(Icons.chat_bubble),
       ),
       body: ListView.builder(
-        itemCount: chats.length,
+        itemCount: chatList.length,
         itemBuilder: (context, index) => CustomCard(
-          chat: chats[index],
+          chat: chatList[index],
         ),
       ),
     );
