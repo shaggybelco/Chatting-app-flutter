@@ -38,9 +38,9 @@ class _CreateGroupState extends State<CreateGroup> {
             ),
           ),
         ),
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               "New group",
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),

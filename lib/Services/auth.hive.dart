@@ -6,13 +6,14 @@ class AuthHiveClient {
   final _authBox = Hive.box("authBox");
   final _userBox = Hive.box("userBox");
 
-  Future getUser(String key) async {
+  getUser(String key) async {
     return await _userBox.get(key);
   }
 
   Future<void> storeUserData(UserDataAdapter user) async {
     await _userBox.clear();
     await _userBox.put("user", user);
+    await _userBox.put("user_id", user.id);
   }
 
   Future<void> authHiveStoreToken(TokenModel logginData) async {
@@ -26,7 +27,7 @@ class AuthHiveClient {
     return token;
   }
 
-  Future<void> Logout() async {
+  Future<void> logout() async {
     await _authBox.put("token", "");
     await _authBox.put("isLoggedIn", false);
   }

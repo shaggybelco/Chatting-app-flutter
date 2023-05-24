@@ -95,11 +95,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     backgroundColor: const Color.fromARGB(255, 11, 36, 71),
                     elevation: 0,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(14),
+                  child: const Padding(
+                    padding: EdgeInsets.all(14),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.done,
                           color: Colors.white,

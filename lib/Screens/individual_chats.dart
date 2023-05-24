@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Custom/receiver_bubble.dart';
@@ -24,33 +26,32 @@ class _IndividualChatsState extends State<IndividualChats> {
   final TextEditingController _controller = TextEditingController();
   final GetChats getChats = GetChats();
   late IO.Socket socket;
+  final AuthHiveClient authHiveClient = AuthHiveClient();
+  // final _userBox = Hive.box("userBox");
 
-  late String userId = "";
-  void getUser() async {
-    await getChats.getUser().then(
-          (value) => {
-            setState(() {
-              userId = value.id.toString();
-            }),
-            print(value.id),
-          },
-        );
+  Future<String> getUser() async {
+    final dynamic userId = await authHiveClient.getUser("user_id");
+    if (userId is String) {
+      return userId;
+    }
+    return ""; // Return an empty string if the user_id is not a String.
   }
 
   void connect() {
     socket.onConnect(
-      (data) => {
+      (data) async => {
         print("connection done"),
         socket.emit(
           "connected",
           {
-            "userID": userId,
+            "userID": await getUser(),
           },
         )
       },
     );
 
     print(socket.connected);
+    // ignore: prefer_interpolation_to_compose_strings
     socket.onConnectError((data) => {print("Connetcion error: " + data)});
 
     socket.onDisconnect((data) => print("Disconnection done"));
@@ -204,15 +205,36 @@ class _IndividualChatsState extends State<IndividualChats> {
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height - 180,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      if (widget.chats.receiver!.id.toString() != userId) {
-                        return const Senderbubble();
+                  child: FutureBuilder<String>(
+                    future: getUser(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Return a loading widget or placeholder while awaiting userId
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        // Handle any errors that occurred while fetching userId
+                        return Text('Error: ${snapshot.error}');
                       } else {
-                        return const ReceiverBubble();
+                        final userId = snapshot.data!;
+                        return ListView.builder(
+                          itemBuilder: (context, index) {
+                            if (widget.chats.filteredMessages![index].sender!.id
+                                    .toString() !=
+                                userId.toString()) {
+                              return ReceiverBubble(
+                                messages: widget.chats.filteredMessages![index],
+                              );
+                            } else {
+                              return Senderbubble(
+                                messages: widget.chats.filteredMessages![index],
+                              );
+                            }
+                          },
+                          itemCount: widget.chats.filteredMessages!.length,
+                        );
                       }
                     },
-                    itemCount: widget.chats.filteredMessages!.length,
                   ),
                 ),
                 Align(

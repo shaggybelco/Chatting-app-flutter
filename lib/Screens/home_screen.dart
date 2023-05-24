@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
             PopupMenuButton<String>(
               onSelected: (value) {
                 if (value == "Logout") {
-                  AuthHiveClient().Logout();
+                  AuthHiveClient().logout();
 
                   Navigator.push(
                     context,

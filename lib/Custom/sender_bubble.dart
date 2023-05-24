@@ -1,7 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../Models/chat.model.dart';
 
 class Senderbubble extends StatelessWidget {
-  const Senderbubble({super.key});
+  const Senderbubble({Key? key, required this.messages}) : super(key: key);
+  final LastMessage messages;
+
+  String formatMessageDate(String dateString) {
+    DateTime now = DateTime.now();
+
+    DateTime messageDate = DateTime.parse(dateString);
+
+    Duration difference = now.difference(messageDate);
+
+    if (difference.inSeconds < 1) {
+      return "Just now";
+    } else if (difference.inSeconds < 60) {
+      return "${difference.inSeconds} seconds ago";
+    } else if (difference.inHours < 24 && now.day == messageDate.day) {
+      return '${messageDate.hour.toString().padLeft(2, '0')}:${messageDate.minute.toString().padLeft(2, '0')}';
+    } else if (difference.inDays == 1 ||
+        (difference.inHours < 24 && now.day != messageDate.day)) {
+      return "Yesterday";
+    } else {
+      return DateFormat('dd MMM yyyy').format(messageDate);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +43,16 @@ class Senderbubble extends StatelessWidget {
           color: const Color.fromARGB(255, 11, 36, 71),
           child: Stack(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(
+              Padding(
+                padding: const EdgeInsets.only(
                   left: 10,
                   right: 60,
                   top: 5,
                   bottom: 20,
                 ),
                 child: Text(
-                  "hey you dafasdfasd fsadf asdf asdf sadf sadf sadf sadf sadf",
-                  style: TextStyle(
+                  messages.message.toString(),
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                   ),
@@ -37,19 +62,19 @@ class Senderbubble extends StatelessWidget {
                 bottom: 4,
                 right: 10,
                 child: Row(
-                  children: const [
+                  children: [
                     Text(
-                      "20:52",
-                      style: TextStyle(
+                      formatMessageDate(messages.createdAt.toString()),
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 10,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Icon(
-                      Icons.done_all,
+                      messages.read == true ? Icons.done_all : Icons.done,
                       color: Colors.white,
                       size: 18,
                     ),

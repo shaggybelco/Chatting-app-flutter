@@ -37,9 +37,9 @@ class _ContactsState extends State<Contacts> {
             ),
           ),
         ),
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               "Select contacts",
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),

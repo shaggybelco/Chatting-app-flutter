@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/user.adapter.dart';
@@ -30,7 +32,6 @@ class MyApp extends StatelessWidget {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final authBox = Hive.box("authBox");
-    final userBox = Hive.box("userBox");
 
     // authBox.put("isLoggedIn", false);
     bool? isLoggedIn = authBox.get("isLoggedIn");

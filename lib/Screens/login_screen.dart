@@ -50,13 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
             // ignore: unnecessary_null_comparison
             if (value != null)
               {
-                // setState(() {
-                //   isApiCallProcessing = false;
-                // }),
                 userModel.avatar = value.user?.avatar,
                 userModel.isAvatar = value.user?.isAvatar,
                 userModel.name = value.user?.name,
                 userModel.cellphone = value.user?.cellphone,
+                userModel.id = value.user?.id,
                 if (value.message!.isNotEmpty)
                   {
                     await AuthHiveClient().authHiveStoreToken(
@@ -192,9 +190,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: const [
+                      children: [
                         Text(
                           "Forgot Password?",
                           style: TextStyle(
@@ -222,11 +220,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         backgroundColor: const Color.fromARGB(255, 11, 36, 71),
                         elevation: 50.0,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(14),
+                      child: const Padding(
+                        padding: EdgeInsets.all(14),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.done,
                               color: Colors.white,

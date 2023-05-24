@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Custom/custom_card.dart';
 import 'package:frontend/Models/chat.model.dart';
-import 'package:frontend/Models/chat_model.dart';
 import 'package:frontend/Screens/select_contact.dart';
-import 'package:hive/hive.dart';
 
 import '../Services/getUserChats.service.dart';
 
